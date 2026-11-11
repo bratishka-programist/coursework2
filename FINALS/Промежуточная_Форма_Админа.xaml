@@ -1,0 +1,66 @@
+﻿<Window x:Class="FINALS.Промежуточная_Форма_Админа"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FINALS"
+        mc:Ignorable="d"
+        Title="Выбор действия" Height="350" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="White" Offset="1"/>
+            <GradientStop Color="Red" Offset="0"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Window.Resources>
+        <Style x:Key="FinalsButton" TargetType="Button">
+            <Setter Property="Width" Value="220"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="Background" Value="#1B1C20"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border x:Name="border"
+                CornerRadius="8"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Background="#FF4E4E4E">
+        <TextBlock Margin="0,10,0,0" TextWrapping="Wrap" Text="Выберите действие" FontWeight="Bold" FontStyle="Italic" Foreground="White" FontSize="20" HorizontalAlignment="Center" Width="210" VerticalAlignment="Top"/>
+        <Button Content="РЕДАКТИРОВАНИЕ ПОЛЬЗОВАТЕЛЕЙ" Margin="30,62,31,189" Height="NaN" Width="NaN" Style="{StaticResource FinalsButton}" FontWeight="Bold" FontStyle="Italic" FontSize="12" Foreground="White" BorderBrush="White" Click="Button_Click">
+            <Button.Background>
+                <ImageBrush/>
+            </Button.Background>
+        </Button>
+        <Button Content="РЕДАКТИРОВАНИЕ/УДАЛЕНИЕ КОНФИГУРАЦИЙ" Margin="30,126,31,125" Height="NaN" Width="NaN" Style="{StaticResource FinalsButton}" FontWeight="Bold" FontStyle="Italic" FontSize="12" Foreground="White" BorderBrush="White" Click="Button_Click_1">
+            <Button.Background>
+                <ImageBrush/>
+            </Button.Background>
+        </Button>
+        <Button Content="НАЗАД" Margin="30,193,31,58" Height="NaN" Width="NaN" Style="{StaticResource FinalsButton}" FontWeight="Bold" FontStyle="Italic" FontSize="12" Foreground="White" BorderBrush="White" Click="Button_Click_2">
+            <Button.Background>
+                <ImageBrush/>
+            </Button.Background>
+        </Button>
+
+    </Grid>
+</Window>

@@ -1,0 +1,135 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="FINALS.MainWindow"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Title="Авторизация и регистрация" Height="550" Width="400">
+    <Window.Resources>
+        <Style x:Key="FinalsButton" TargetType="Button">
+            <Setter Property="Width" Value="220"/>
+            <Setter Property="Height" Value="60"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="Background" Value="#1B1C20"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border x:Name="border"
+                        CornerRadius="8"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Image Source="img/avto.jpg" Stretch="Fill">
+            <Image.Effect>
+                <BlurEffect Radius="20"/>
+            </Image.Effect>
+        </Image>
+
+        <TabControl Background="Transparent" BorderThickness="0" FontSize="14" Foreground="Black"
+                    Margin="10,10,10,10">
+            <!-- Вход -->
+            <TabItem Header="Авторизация" FontWeight="Bold" Background="{x:Null}" BorderBrush="{x:Null}" FontStyle="Italic" Foreground="#FF6B6B6B">
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Заголовок -->
+                    <TextBlock Text="АВТОРИЗАЦИЯ"
+                FontSize="30"
+                FontWeight="Bold"
+                Foreground="White"
+                Grid.Row="0"
+                Margin="0,0,0,10"
+                HorizontalAlignment="Center" FontStyle="Italic"/>
+
+                    <!-- Логин -->
+                    <TextBlock Text="Логин" 
+                Foreground="White" 
+                Grid.Row="1" 
+                Margin="0,10,0,5"/>
+                    <TextBox x:Name="login" 
+              Height="30" 
+              Grid.Row="2" 
+              Margin="0,0,0,10"/>
+
+                    <!-- Пароль -->
+                    <TextBlock Text="Пароль" 
+                Foreground="White" 
+                Grid.Row="3" 
+                Margin="0,15,0,0"/>
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox x:Name="paroltext" 
+                  Height="30" 
+                  Margin="0,5,0,5"
+                  />
+                        <PasswordBox x:Name="parolavto" 
+                      Height="30" 
+                      PasswordChanged="parolavto_PasswordChanged" 
+                      Grid.Column="0" Margin="0,5,0,5"/>
+                        <Button Content="👀" 
+                 Width="36" 
+                 FontSize="22" 
+                 FontFamily="Arial Black" 
+                 PreviewMouseLeftButtonDown="Button_PreviewMouseLeftButtonDown" 
+                 PreviewMouseLeftButtonUp="Button_PreviewMouseLeftButtonUp" 
+                 Grid.Column="1" 
+                 Margin="5,0,0,0" Height="30" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Button Content="ВОЙТИ" Margin="0,116,0,0" Height="40" Width="NaN" Style="{StaticResource FinalsButton}" Background="#FF2BBB1F" FontStyle="Italic" FontWeight="Bold" Foreground="White" BorderBrush="{x:Null}" VerticalAlignment="Top" FontSize="24" Grid.Row="6" Click="GOIN" />
+                    <Button x:Name="onlyInspection" Content="К ПРОСМОТРУ" Height="40" Width="NaN" Style="{StaticResource FinalsButton}" Background="#FFA0A0A0" FontStyle="Italic" FontWeight="Bold" Foreground="White" BorderBrush="{x:Null}" VerticalAlignment="Top" FontSize="24" Grid.Row="6" Margin="0,173,0,0" Click="onlyInspection_Click" />
+                </Grid>
+            </TabItem>
+
+            <!-- Регистрация -->
+            <TabItem Header="Регистрация" FontWeight="Bold" Background="{x:Null}" BorderBrush="{x:Null}" FontStyle="Italic" Foreground="#FF828282">
+                <Grid Margin="10">
+                    <StackPanel HorizontalAlignment="Center" Width="336" Margin="0,10,0,0" Height="445" VerticalAlignment="Top">
+                        <TextBlock Text="РЕГИСТРАЦИЯ" FontSize="30" Foreground="White" Margin="0,0,0,15" Width="226" FontWeight="Bold"/>
+                        <TextBlock Text="ФИО" Margin="0,0,0,5" Foreground="White"/>
+                        <TextBox x:Name="fio" Width="335" Height="25" Margin="0,0,0,10"/>
+                        <TextBlock Text="Логин" Margin="0,0,0,5" Foreground="White"/>
+                        <TextBox x:Name="txtlogin" Width="335" Height="25" Margin="0,0,0,10"/>
+                        <TextBlock Text="Пароль" Margin="0,0,0,5" Foreground="White"/>
+                        <PasswordBox x:Name="pas1" Width="335" Height="25" Margin="0,0,0,10"/>
+                        <TextBlock Text="Повторите пароль" Margin="0,0,0,5" Foreground="White"/>
+                        <PasswordBox x:Name="pas2" Width="335" Height="25" Margin="0,0,0,20"/>
+                    </StackPanel>
+                    <Button Content="ЗАРЕГИСТРИРОВАТЬСЯ" Height="40" Width="NaN" Style="{StaticResource FinalsButton}" Background="#FF2BBB1F" FontStyle="Italic" FontWeight="Bold" Foreground="White" BorderBrush="{x:Null}" FontSize="24" Margin="10,324,10,0" VerticalAlignment="Top" Click="CREATEACC" />
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>

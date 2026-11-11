@@ -1,0 +1,300 @@
+﻿<Window x:Class="FINALS.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="THE FINALS - Build Helper" Height="600" Width="650"
+        Background="#1a1a1a" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <!-- Стиль для плавного ScrollViewer -->
+        <Style x:Key="SmoothScrollViewer" TargetType="ScrollViewer">
+            <Setter Property="PanningMode" Value="VerticalOnly"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+        </Style>
+
+        <!-- Стиль для ListBox -->
+        <Style x:Key="BuildListBoxStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+            <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ScrollViewer Style="{StaticResource SmoothScrollViewer}"
+                                        Focusable="False"
+                                        Padding="{TemplateBinding Padding}">
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="Margin" Value="2,4"/>
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="6"
+                                            Margin="1"
+                                            SnapsToDevicePixels="True">
+                                        <ContentPresenter/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#2a2a2a"/>
+                                            <Setter Property="BorderBrush" Value="#FFD700"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#333366"/>
+                                            <Setter Property="BorderBrush" Value="#4CAF50"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль для кнопок -->
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#333366"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#555588"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#444477"/>
+                    <Setter Property="BorderBrush" Value="#666699"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- DataTemplate для отображения билда -->
+        <DataTemplate x:Key="BuildTemplate">
+            <Border Background="#2a2a2a" BorderBrush="#444" BorderThickness="1" CornerRadius="6" Padding="12" Margin="2,4"
+                    UseLayoutRounding="True" SnapsToDevicePixels="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="120"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Заголовок и описание -->
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,8">
+                        <TextBlock Text="{Binding BuildName}" FontSize="14" FontWeight="Bold" Foreground="#FFD700"/>
+                        <TextBlock Text="{Binding Description}" FontSize="9" Foreground="#CCCCCC" TextWrapping="Wrap" 
+                                  Margin="0,2,0,0" MaxHeight="32" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+
+                    <!-- Левая часть - основная информация -->
+                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,8,0">
+                        <!-- Основное изображение -->
+                        <Border Background="#1a1a1a" CornerRadius="4" Padding="4" Margin="0,0,0,6">
+                            <Image Source="{Binding BuildImage}" Stretch="Uniform" Height="60"/>
+                        </Border>
+
+                        <!-- Специализация и оружие в строку -->
+                        <Grid Margin="0,4,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Специализация -->
+                            <Border Grid.Column="0" Background="#1a1a1a" CornerRadius="4" Padding="6" Margin="0,0,4,0">
+                                <StackPanel>
+                                    <TextBlock Text="Специализация" FontSize="8" Foreground="#888" Margin="0,0,0,2"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Background="#333" CornerRadius="3" Padding="2" Margin="0,0,4,0">
+                                            <Image Source="{Binding SpecializationImage}" Stretch="Uniform" Height="20" Width="20"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding Specialization}" FontSize="10" FontWeight="Bold" Foreground="#4CAF50"
+                                                  VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Оружие -->
+                            <Border Grid.Column="1" Background="#1a1a1a" CornerRadius="4" Padding="6" Margin="4,0,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="Оружие" FontSize="8" Foreground="#888" Margin="0,0,0,2"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Background="#333" CornerRadius="3" Padding="2" Margin="0,0,4,0">
+                                            <Image Source="{Binding WeaponImage}" Stretch="Uniform" Height="20" Width="20"/>
+                                        </Border>
+                                        <TextBlock Text="{Binding Weapon}" FontSize="10" FontWeight="Bold" Foreground="White"
+                                                  VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Правая часть - гаджеты -->
+                    <Border Grid.Row="1" Grid.Column="1" Background="#1a1a1a" CornerRadius="4" Padding="6">
+                        <StackPanel>
+                            <TextBlock Text="Гаджеты" FontSize="9" Foreground="#888" Margin="0,0,0,4"/>
+                            <ItemsControl ItemsSource="{Binding Gadgets}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#252525" CornerRadius="3" Padding="4" Margin="0,1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="16"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="{Binding Image}" Stretch="Uniform" Height="14"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Name}" FontSize="8" Foreground="White" 
+                                                          VerticalAlignment="Center" Margin="4,0,0,0" TextWrapping="Wrap"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Резервные предметы -->
+                    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="#1a1a1a" CornerRadius="4" Padding="6" Margin="0,6,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Резервный набор" FontSize="9" FontWeight="Bold" Foreground="#FF6B6B" Margin="0,0,0,4"/>
+                            <ItemsControl ItemsSource="{Binding ReserveItems}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="4" HorizontalAlignment="Stretch"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#252525" CornerRadius="3" Padding="4" Margin="2,1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="16"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Border Background="#333" CornerRadius="2" Padding="1">
+                                                    <Image Source="{Binding Image}" Stretch="Uniform" Height="12"/>
+                                                </Border>
+                                                <TextBlock Grid.Column="1" Text="{Binding Name}" FontSize="7" Foreground="White" 
+                                                          VerticalAlignment="Center" Margin="3,0,0,0" TextWrapping="Wrap"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Статус билда -->
+                    <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Background="#252525" CornerRadius="3" Padding="4" Margin="0,4,0,0">
+                        <TextBlock Text="Готов к игре" FontSize="8" Foreground="#4CAF50" HorizontalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <Border Grid.Row="0" Background="#2a2a2a" CornerRadius="6" Padding="8" Margin="0,0,0,6">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="THE FINALS" FontSize="16" FontWeight="Bold" Foreground="#FFD700"/>
+                <TextBlock Text=" - Библиотека билдов" FontSize="16" FontWeight="Bold" Foreground="White" Margin="6,0,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Основной контент -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="140"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ListBox с билдами -->
+            <ListBox x:Name="BuildsListBox" 
+                     Grid.Column="0" 
+                     ItemTemplate="{StaticResource BuildTemplate}"
+                     Style="{StaticResource BuildListBoxStyle}"
+                     Margin="0,0,6,0"/>
+
+            <!-- Компактная панель управления -->
+            <Border Grid.Column="1" Background="#2a2a2a" CornerRadius="6" Padding="8">
+                <StackPanel>
+                    <TextBlock Text="Управление" FontSize="12" FontWeight="Bold" Foreground="#FFD700" Margin="0,0,0,8"/>
+
+                    <Button Content="Добавить" Style="{StaticResource ActionButtonStyle}" Margin="0,0,0,4"/>
+                    <Button Content="Редактировать" Style="{StaticResource ActionButtonStyle}" Margin="0,0,0,4"/>
+                    <Button Content="Удалить" Style="{StaticResource ActionButtonStyle}" Margin="0,0,0,4"/>
+                    <Button Content="Экспорт" Style="{StaticResource ActionButtonStyle}" Margin="0,0,0,8"/>
+
+                    <Separator Background="#444" Margin="0,0,0,6"/>
+
+                    <TextBlock Text="Статистика:" FontSize="10" FontWeight="Bold" Foreground="#4CAF50" Margin="0,0,0,4"/>
+                    <TextBlock x:Name="StatsText" Text="Билдов: 0" FontSize="9" Foreground="White" Margin="0,0,0,6"/>
+
+                    <Separator Background="#444" Margin="0,0,0,6"/>
+
+                    <TextBlock Text="Типы:" FontSize="10" FontWeight="Bold" Foreground="#4CAF50" Margin="0,0,0,4"/>
+                    <TextBlock Text="• Штурмовые" FontSize="8" Foreground="#FF6B6B" Margin="4,0,0,1"/>
+                    <TextBlock Text="• Поддержка" FontSize="8" Foreground="#4CAF50" Margin="4,0,0,1"/>
+                    <TextBlock Text="• Снайперы" FontSize="8" Foreground="#2196F3" Margin="4,0,0,1"/>
+                    <TextBlock Text="• Защита" FontSize="8" Foreground="#FFD700" Margin="4,0,0,1"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Статус бар -->
+        <StatusBar Grid.Row="2" Background="#2a2a2a" Foreground="White" Margin="0,6,0,0" Height="20">
+            <StatusBarItem>
+                <TextBlock Text="THE FINALS Build Helper" FontSize="9"/>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <TextBlock x:Name="StatusText" Text="Готов" FontSize="9"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
